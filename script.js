@@ -22,3 +22,33 @@ var currentDay = moment().format("MMMM Do YYYY");
 //WHEN I open the planner
 //THEN the current day is displayed at the top of the calendar
 $currentDay.text(currentDay);
+
+//WHEN I scroll down
+//THEN I am presented with time blocks for standard business hours
+for (var i = 0; i < workDayHours.length; i++) {
+  var timeBlockRow = $("<div>")
+    .addClass("row time-block")
+    .attr({
+      id: "row-" + (i + 9),
+    });
+
+  var timeBlockHour = $("<div>")
+    .addClass("col-1 hour")
+    .text(workDayHours[i])
+    .attr({
+      id: i + 9,
+    });
+
+  var timeBlockCenterSpace = $("<div>")
+    .addClass("col-10")
+    .attr({
+      id: "time-block-" + (i + 9),
+    });
+
+  var userInput = $("<p>")
+    .addClass("description")
+    .text(" ")
+    .attr({
+      id: "Hour-" + (i + 9),
+    });
+}
