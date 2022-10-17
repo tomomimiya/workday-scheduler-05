@@ -1,19 +1,24 @@
-var $currentDayLocation = $("#currentDay");
+var $currentDay = $("#currentDay");
 var $container = $(".container");
-var $currentHour = moment().hour();
+var currentHour = moment().hour();
+//where note goes in
+var task = $(".description");
+
+var workDayHours = [
+  moment().hour(9).format("hA"),
+  moment().hour(10).format("hA"),
+  moment().hour(11).format("hA"),
+  moment().hour(12).format("hA"),
+  moment().hour(13).format("hA"),
+  moment().hour(14).format("hA"),
+  moment().hour(15).format("hA"),
+  moment().hour(16).format("hA"),
+  moment().hour(17).format("hA"),
+];
+//target the div that holds the time block hour
+var timeBlockHour = $("col-1 hour");
+var currentDay = moment().format("MMMM Do YYYY");
 
 //WHEN I open the planner
 //THEN the current day is displayed at the top of the calendar
-var $currentDay = moment().format("MMMM Do YYYY");
-$currentDayLocation.text($currentDay);
-
-//WHEN I scroll down
-//THEN I am presented with time blocks for standard business hours
-//WHEN I view the time blocks for that day
-//THEN each time block is color-coded to indicate whether it is in the past, present, or future
-//WHEN I click into a time block
-//THEN I can enter an event
-//WHEN I click the save button for that time block
-//THEN the text for that event is saved in local storage
-//WHEN I refresh the page
-//THEN the saved events persist
+$currentDay.text(currentDay);
