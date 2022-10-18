@@ -51,4 +51,43 @@ for (var i = 0; i < workDayHours.length; i++) {
     .attr({
       id: "Hour-" + (i + 9),
     });
+
+  //check time
+  auditTimeBlock(timeBlockCenterSpace);
+
+  //save button
+  var $saveBtn = $("<button>")
+    .addClass("col-1 saveBtn")
+    .attr({
+      id: "save-button-" + (i + 9),
+      type: "button",
+    })
+    .click(function () {
+      var hour = $(this).siblings().first().text();
+      var task = $(this).siblings().last().text();
+      //save
+      saveTask(hour, task);
+    });
+  var saveIcon = $("<i>").addClass("fas fa-save");
+
+  $container.append(timeBlockRow);
+  timeBlockRow.append(timeBlockHour);
+  timeBlockRow.append(timeBlockCenterSpace);
+  timeBlockCenterSpace.append(userInput);
+  timeBlockRow.append($saveBtn);
+  $saveBtn.append(saveIcon);
+}
+//WHEN I view the time blocks for that day
+//THEN each time block is color-coded to indicate whether it is in the past, present, or future
+function auditTimeBlock(timeBlockCenterSpace) {
+  var currentTimeBlockHour = moment($(timeBlockHour).text(), "hA").hour();
+
+  //add colors on the blocks
+  if (currentTimeBlockHour > currentHour) {
+    $(timeBlockCenterSpace).addClass("future");
+  } else if (currentTimeBlockHour === currentHour) {
+    $(timeBlockCenterSpace).addClass("present");
+  } else {
+    $(timeBlockCenterSpace).addClass("past");
+  }
 }
