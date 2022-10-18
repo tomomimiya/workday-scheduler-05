@@ -1,9 +1,3 @@
-var $currentDay = $("#currentDay");
-var $container = $(".container");
-var currentHour = moment().hour();
-//where note goes in
-var task = $(".description");
-
 var workDayHours = [
   moment().hour(9).format("hA"),
   moment().hour(10).format("hA"),
@@ -15,8 +9,14 @@ var workDayHours = [
   moment().hour(16).format("hA"),
   moment().hour(17).format("hA"),
 ];
+//console.log(workDayHours);
+var $currentDay = $("#currentDay");
+var $container = $(".container");
+var currentHour = moment().hour();
+//where note goes in
+var $task = $(".description");
 //target the div that holds the time block hour
-var timeBlockHour = $("col-1 hour");
+var $timeBlockHour = $("col-1 hour");
 var currentDay = moment().format("MMMM Do YYYY");
 
 //WHEN I open the planner
@@ -30,31 +30,32 @@ for (var i = 0; i < workDayHours.length; i++) {
     .addClass("row time-block")
     .attr({
       id: "row-" + (i + 9),
-    });
+    })
+    .appendTo($container);
 
-  var timeBlockHour = $("<div>")
+  var $timeBlockHour = $("<div>")
     .addClass("col-1 hour")
     .text(workDayHours[i])
     .attr({
       id: i + 9,
-    });
+    })
+    .appendTo(timeBlockRow);
 
-  var timeBlockCenterSpace = $("<div>")
+  var $timeBlockCenterSpace = $("<div>")
     .addClass("col-10")
     .attr({
       id: "time-block-" + (i + 9),
-    });
+    })
+    .appendTo(timeBlockRow);
 
-  var userInput = $("<p>")
+  var $userInput = $("<p>")
     .addClass("description")
     .text(" ")
     .attr({
       id: "Hour-" + (i + 9),
-    });
-
-  //check time
-  auditTimeBlock(timeBlockCenterSpace);
-
+    })
+    .appendTo($timeBlockCenterSpace);
+  //******description part not working?*******
   //save button
   var $saveBtn = $("<button>")
     .addClass("col-1 saveBtn")
@@ -64,30 +65,50 @@ for (var i = 0; i < workDayHours.length; i++) {
     })
     .click(function () {
       var hour = $(this).siblings().first().text();
-      var task = $(this).siblings().last().text();
+      var $task = $(this).siblings().last().text();
       //save
-      saveTask(hour, task);
-    });
-  var saveIcon = $("<i>").addClass("fas fa-save");
+      saveTask(hour, $task);
+    })
+    .appendTo(timeBlockRow);
+  var saveIcon = $("<i>").addClass("fas fa-save").appendTo($saveBtn);
 
-  $container.append(timeBlockRow);
-  timeBlockRow.append(timeBlockHour);
-  timeBlockRow.append(timeBlockCenterSpace);
-  timeBlockCenterSpace.append(userInput);
-  timeBlockRow.append($saveBtn);
-  $saveBtn.append(saveIcon);
+  //check time
+  auditTimeBlock($timeBlockCenterSpace);
 }
 //WHEN I view the time blocks for that day
 //THEN each time block is color-coded to indicate whether it is in the past, present, or future
-function auditTimeBlock(timeBlockCenterSpace) {
-  var currentTimeBlockHour = moment($(timeBlockHour).text(), "hA").hour();
+function auditTimeBlock($timeBlockCenterSpace) {
+  var currentTimeBlockHour = moment($timeBlockHour.text(), "hA").hour();
 
   //add colors on the blocks
   if (currentTimeBlockHour > currentHour) {
-    $(timeBlockCenterSpace).addClass("future");
+    $timeBlockCenterSpace.addClass("future");
   } else if (currentTimeBlockHour === currentHour) {
-    $(timeBlockCenterSpace).addClass("present");
+    $timeBlockCenterSpace.addClass("present");
   } else {
-    $(timeBlockCenterSpace).addClass("past");
+    $timeBlockCenterSpace.addClass("past");
   }
 }
+
+//WHEN I click the save button for that time block
+//THEN the text for that event is saved in local storage
+function loadTask() {
+  for (var i = 0; i < workDayHours.length; i++) {
+    var $task = localStorage.getItem(workDayHours[i]);
+
+    if ($task) {
+      $("#" + (i + 9))
+        .siblings()
+        .first()
+        .children()
+        .text($task);
+    }
+  }
+}
+//saving
+function saveTask(hour, $task) {
+  localStorage.setItem(hour, $task);
+}
+//WHEN I refresh the page
+//THEN the saved events persist
+loadTask();
