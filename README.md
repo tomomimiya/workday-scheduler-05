@@ -1,11 +1,12 @@
 # workday-scheduler-05
 Work day scheduler challenge. Module 05 - third party API
 
-### GitHub repo link -
+### GitHub repo link -  https://github.com/tomomimiya/workday-scheduler-05
 
-### Deployable link -
+### Deployable link -  https://tomomimiya.github.io/workday-scheduler-05/
 
 ### Screenshot Image
+![Project Screenshot](Screen%20Shot%202022-10-18%20at%201.57.14%20PM.png)
 
 ## User Story
 AS AN employee with a busy schedule
